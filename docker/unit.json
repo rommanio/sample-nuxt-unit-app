@@ -1,0 +1,36 @@
+{
+    "listeners": {
+        "*:9992": {
+            "pass": "applications/nuxt",
+            "client_ip": {
+                "header": "X-Forwarded-For",
+                "recursive": true,
+                "source": [
+                    "0.0.0.0/0"
+                ]
+            }
+        }
+    },
+    "applications": {
+        "nuxt": {
+            "type": "external",
+            "working_directory": "/var/www/server",
+            "user": "www-data",
+            "group": "www-data",
+            "executable": "/usr/bin/env",
+            "arguments": [
+                "node",
+                "--loader",
+                "unit-http/loader.mjs",
+                "--require",
+                "unit-http/loader",
+                "index.mjs"
+            ],
+            "processes": {
+                "max": 8,
+                "spare": 3,
+                "idle_timeout": 30
+            }
+        }
+    }
+}

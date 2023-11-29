@@ -1,0 +1,21 @@
+version: '3'
+services:
+  unit:
+    image: sample-nuxt-unit-app
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    entrypoint: [ "/usr/local/bin/docker-entrypoint.sh" ]
+    command:
+       [
+         "unitd",
+         "--no-daemon",
+         "--control",
+         "unix:/var/run/control.unit.sock"
+       ]
+    restart: unless-stopped
+    ports:
+      - 9992:9992
+      #- 3000:3000
+    sysctls:
+      net.core.somaxconn: 20000
